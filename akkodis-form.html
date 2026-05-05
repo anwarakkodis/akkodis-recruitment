@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akkodis — Apply Now</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+  :root {
+    --akk-blue: #0066CC;
+    --akk-dark: #001A3A;
+    --akk-mid: #003875;
+    --akk-light: #E8F1FB;
+    --akk-accent: #00AEEF;
+    --akk-white: #FFFFFF;
+    --akk-grey: #6B7A8D;
+    --akk-border: #CBD8E8;
+    --akk-success: #00C896;
+    --akk-error: #FF4757;
+    --akk-warn: #FFB347;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--akk-dark);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(0,102,204,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,174,239,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Grid overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,102,204,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,102,204,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(0,102,204,0.25);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 620px;
+    position: relative;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: linear-gradient(135deg, var(--akk-mid) 0%, var(--akk-blue) 100%);
+    padding: 32px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card-header::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: -30px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.08);
+  }
+
+  .card-header::before {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .logo {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--akk-accent);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .card-header h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.1;
+    letter-spacing: 0.5px;
+  }
+
+  .card-header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  /* Progress */
+  .progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    padding: 24px 40px 0;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--akk-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--akk-grey);
+    background: transparent;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  .step-circle.active {
+    border-color: var(--akk-blue);
+    background: var(--akk-blue);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(0,102,204,0.15);
+  }
+
+  .step-circle.done {
+    border-color: var(--akk-success);
+    background: var(--akk-success);
+    color: white;
+  }
+
+  .step-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--akk-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .step.active .step-label { color: var(--akk-blue); }
+  .step.done .step-label { color: var(--akk-success); }
+
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--akk-border);
+    margin: 0 8px;
+    transition: background 0.3s;
+  }
+
+  .step-line.done { background: var(--akk-success); }
+
+  /* Form body */
+  .form-body {
+    padding: 28px 40px 36px;
+  }
+
+  .page { display: none; animation: fadeIn 0.3s ease; }
+  .page.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--akk-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(0,174,239,0.3), transparent);
+  }
+
+  .row { display: grid; gap: 16px; margin-bottom: 16px; }
+  .row.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+
+  label {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    font-family: 'Rajdhani', sans-serif;
+  }
+
+  input, select, textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s ease;
+    outline: none;
+    width: 100%;
+  }
+
+  select option { background: var(--akk-dark); color: white; }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--akk-blue);
+    background: rgba(0,102,204,0.08);
+    box-shadow: 0 0 0 3px rgba(0,102,204,0.12);
+  }
+
+  input.error, select.error, textarea.error {
+    border-color: var(--akk-error);
+    background: rgba(255,71,87,0.05);
+  }
+
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+  textarea { resize: none; min-height: 90px; }
+
+  /* File upload */
+  .file-zone {
+    border: 2px dashed rgba(0,102,204,0.35);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(0,102,204,0.03);
+    position: relative;
+  }
+
+  .file-zone:hover, .file-zone.drag-over {
+    border-color: var(--akk-blue);
+    background: rgba(0,102,204,0.08);
+  }
+
+  .file-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .file-icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+  }
+
+  .file-zone p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 4px;
+  }
+
+  .file-zone strong {
+    color: var(--akk-accent);
+  }
+
+  .file-name {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,200,150,0.1);
+    border: 1px solid rgba(0,200,150,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: var(--akk-success);
+    margin-top: 10px;
+  }
+
+  .file-name.visible { display: flex; }
+
+  /* Error message */
+  .err-msg {
+    font-size: 11px;
+    color: var(--akk-error);
+    display: none;
+    margin-top: 2px;
+  }
+
+  .err-msg.visible { display: block; }
+
+  /* Alert */
+  .alert {
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 13px;
+    margin-bottom: 20px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .alert.error { display: flex; background: rgba(255,71,87,0.1); border: 1px solid rgba(255,71,87,0.3); color: #FF8A96; }
+  .alert.success { display: flex; background: rgba(0,200,150,0.1); border: 1px solid rgba(0,200,150,0.3); color: var(--akk-success); }
+  .alert.info { display: flex; background: rgba(0,174,239,0.1); border: 1px solid rgba(0,174,239,0.3); color: var(--akk-accent); }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 14px 24px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--akk-blue), var(--akk-accent));
+    color: white;
+    box-shadow: 0 4px 20px rgba(0,102,204,0.35);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(0,102,204,0.5);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7);
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.08); }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+
+  /* Spinner */
+  .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Success screen */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 48px 40px;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, var(--akk-success), #00E5A8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 32px rgba(0,200,150,0.35);
+  }
+
+  .success-screen h2 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 10px;
+  }
+
+  .success-screen p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+  }
+
+  .app-id {
+    display: inline-block;
+    margin-top: 20px;
+    background: rgba(0,102,204,0.15);
+    border: 1px solid rgba(0,102,204,0.3);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--akk-accent);
+    letter-spacing: 1px;
+  }
+
+  /* Responsive */
+  @media (max-width: 520px) {
+    .card-header, .form-body { padding-left: 24px; padding-right: 24px; }
+    .progress-bar { padding: 20px 24px 0; }
+    .row.cols-2 { grid-template-columns: 1fr; }
+    .step-label { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <div class="logo">
+      <span class="logo-dot"></span>
+      AKKODIS
+    </div>
+    <h1>Join Our Team</h1>
+    <p>Complete your application in 2 quick steps</p>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar" id="progressBar">
+    <div class="step active" id="step1">
+      <div class="step-circle active" id="circle1">1</div>
+      <span class="step-label">Your Info</span>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step" id="step2">
+      <div class="step-circle" id="circle2">2</div>
+      <span class="step-label">Experience</span>
+    </div>
+  </div>
+
+  <div class="form-body">
+
+    <!-- ALERT -->
+    <div class="alert error" id="alertBox">
+      <span>⚠</span>
+      <span id="alertMsg">Error message here</span>
+    </div>
+
+    <!-- PAGE 1 -->
+    <div class="page active" id="page1">
+      <div class="section-label">Personal Details</div>
+
+      <div class="row">
+        <div class="field">
+          <label>Full Name *</label>
+          <input type="text" id="fullName" placeholder="John Smith">
+          <span class="err-msg" id="err_fullName">Please enter your full name</span>
+        </div>
+      </div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label>Email Address *</label>
+          <input type="email" id="email" placeholder="john@example.com">
+          <span class="err-msg" id="err_email">Enter a valid email</span>
+        </div>
+        <div class="field">
+          <label>Mobile Number *</label>
+          <input type="tel" id="mobile" placeholder="+91 9876543210">
+          <span class="err-msg" id="err_mobile">Enter a valid number</span>
+        </div>
+      </div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label>Country *</label>
+          <select id="country">
+            <option value="">Select Country</option>
+            <option>India</option>
+            <option>United Arab Emirates</option>
+            <option>Saudi Arabia</option>
+            <option>United Kingdom</option>
+            <option>United States</option>
+            <option>Germany</option>
+            <option>Singapore</option>
+            <option>Australia</option>
+            <option>Canada</option>
+            <option>Other</option>
+          </select>
+          <span class="err-msg" id="err_country">Please select a country</span>
+        </div>
+        <div class="field">
+          <label>State / Region *</label>
+          <input type="text" id="state" placeholder="Kerala">
+          <span class="err-msg" id="err_state">Enter your state</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Attach Your CV *</label>
+          <div class="file-zone" id="fileZone">
+            <input type="file" id="cvFile" accept=".pdf,.doc,.docx">
+            <div class="file-icon">📄</div>
+            <p><strong>Click to upload</strong> or drag & drop</p>
+            <p>PDF, DOC, DOCX — max 5MB</p>
+          </div>
+          <div class="file-name" id="fileName">
+            <span>📎</span>
+            <span id="fileNameText"></span>
+          </div>
+          <span class="err-msg" id="err_cv">Please attach your CV</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" id="nextBtn" onclick="handleNext()">
+          <span>Next Step</span>
+          <span>→</span>
+          <div class="spinner" id="nextSpinner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="page" id="page2">
+      <div class="section-label">Professional Background</div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label>Years of Experience *</label>
+          <select id="yearsExp">
+            <option value="">Select</option>
+            <option>Less than 1 year</option>
+            <option>1–3 years</option>
+            <option>3–5 years</option>
+            <option>5–10 years</option>
+            <option>10+ years</option>
+          </select>
+          <span class="err-msg" id="err_yearsExp">Please select experience</span>
+        </div>
+        <div class="field">
+          <label>Current / Last Role *</label>
+          <input type="text" id="currentRole" placeholder="e.g. Frontend Developer">
+          <span class="err-msg" id="err_currentRole">Please enter your role</span>
+        </div>
+      </div>
+
+      <div class="row cols-2">
+        <div class="field">
+          <label>Expected Salary *</label>
+          <input type="text" id="expectedSalary" placeholder="e.g. ₹12 LPA or $60k">
+          <span class="err-msg" id="err_expectedSalary">Please enter expected salary</span>
+        </div>
+        <div class="field">
+          <label>Availability *</label>
+          <select id="availability">
+            <option value="">Select</option>
+            <option>Immediately</option>
+            <option>Within 2 weeks</option>
+            <option>Within 1 month</option>
+            <option>1–3 months</option>
+            <option>3+ months</option>
+          </select>
+          <span class="err-msg" id="err_availability">Please select availability</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Notice Period *</label>
+          <select id="noticePeriod">
+            <option value="">Select</option>
+            <option>Currently serving</option>
+            <option>No notice period</option>
+            <option>15 days</option>
+            <option>1 month</option>
+            <option>2 months</option>
+            <option>3 months</option>
+            <option>More than 3 months</option>
+          </select>
+          <span class="err-msg" id="err_noticePeriod">Please select notice period</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goBack()">← Back</button>
+        <button class="btn btn-primary" id="submitBtn" onclick="handleSubmit()">
+          <span>Submit Application</span>
+          <div class="spinner" id="submitSpinner"></div>
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /form-body -->
+
+  <!-- SUCCESS SCREEN -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2>Application Submitted!</h2>
+    <p>Thank you for applying to Akkodis. Our team will review your application and reach out shortly.</p>
+    <div class="app-id" id="appIdDisplay"></div>
+  </div>
+
+</div><!-- /card -->
+
+<script>
+  // ─── SUPABASE CONFIG ───────────────────────────────────────────────
+  const SUPABASE_URL = 'https://picidbztrzsflxpaduig.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_NE7wAnEQEOqqDbCGxT2EpQ_FjEtQd8m';
+  // ──────────────────────────────────────────────────────────────────
+
+  const API = `${SUPABASE_URL}/rest/v1`;
+  const HEADERS = {
+    'apikey': SUPABASE_ANON_KEY,
+    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
+
+  let candidateId = null;
+
+  // File upload drag
+  const fileZone = document.getElementById('fileZone');
+  const cvFileInput = document.getElementById('cvFile');
+
+  fileZone.addEventListener('dragover', e => { e.preventDefault(); fileZone.classList.add('drag-over'); });
+  fileZone.addEventListener('dragleave', () => fileZone.classList.remove('drag-over'));
+  fileZone.addEventListener('drop', e => {
+    e.preventDefault();
+    fileZone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) {
+      cvFileInput.files = e.dataTransfer.files;
+      showFileName(e.dataTransfer.files[0].name);
+    }
+  });
+
+  cvFileInput.addEventListener('change', () => {
+    if (cvFileInput.files[0]) showFileName(cvFileInput.files[0].name);
+  });
+
+  function showFileName(name) {
+    document.getElementById('fileNameText').textContent = name;
+    document.getElementById('fileName').classList.add('visible');
+    clearErr('cv');
+  }
+
+  // ── VALIDATION HELPERS ─────────────────────────────────────────────
+  function showErr(id, msg) {
+    const el = document.getElementById(id);
+    if (msg) document.getElementById(`err_${id}`).textContent = msg;
+    document.getElementById(`err_${id}`).classList.add('visible');
+    el.classList.add('error');
+  }
+
+  function clearErr(id) {
+    const errEl = document.getElementById(`err_${id}`);
+    const inputEl = document.getElementById(id);
+    if (errEl) errEl.classList.remove('visible');
+    if (inputEl) inputEl.classList.remove('error');
+  }
+
+  function showAlert(msg, type = 'error') {
+    const box = document.getElementById('alertBox');
+    document.getElementById('alertMsg').textContent = msg;
+    box.className = `alert ${type}`;
+  }
+
+  function hideAlert() {
+    document.getElementById('alertBox').className = 'alert';
+  }
+
+  function val(id) { return document.getElementById(id)?.value?.trim() || ''; }
+
+  function validatePage1() {
+    let ok = true;
+    ['fullName','email','mobile','country','state'].forEach(clearErr);
+    clearErr('cv');
+
+    if (!val('fullName')) { showErr('fullName'); ok = false; }
+    const email = val('email');
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('email'); ok = false; }
+    if (!val('mobile')) { showErr('mobile'); ok = false; }
+    if (!val('country')) { showErr('country'); ok = false; }
+    if (!val('state')) { showErr('state'); ok = false; }
+    if (!cvFileInput.files[0]) { showErr('cv', 'Please attach your CV'); ok = false; }
+    return ok;
+  }
+
+  function validatePage2() {
+    let ok = true;
+    ['yearsExp','currentRole','expectedSalary','availability','noticePeriod'].forEach(clearErr);
+
+    if (!val('yearsExp')) { showErr('yearsExp'); ok = false; }
+    if (!val('currentRole')) { showErr('currentRole'); ok = false; }
+    if (!val('expectedSalary')) { showErr('expectedSalary'); ok = false; }
+    if (!val('availability')) { showErr('availability'); ok = false; }
+    if (!val('noticePeriod')) { showErr('noticePeriod'); ok = false; }
+    return ok;
+  }
+
+  // ── CHECK DUPLICATE EMAIL ──────────────────────────────────────────
+  async function checkEmailExists(email) {
+    const res = await fetch(`${API}/candidates?email=eq.${encodeURIComponent(email)}&select=id`, { headers: HEADERS });
+    const data = await res.json();
+    return data.length > 0;
+  }
+
+  // ── UPLOAD CV ──────────────────────────────────────────────────────
+  async function uploadCV(file, candidateEmail) {
+    const ext = file.name.split('.').pop();
+    const path = `${candidateEmail.replace('@','_at_')}_${Date.now()}.${ext}`;
+
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/cvs/${path}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': file.type,
+        'x-upsert': 'false'
+      },
+      body: file
+    });
+
+    if (!res.ok) throw new Error('CV upload failed');
+    return { url: `${SUPABASE_URL}/storage/v1/object/public/cvs/${path}`, filename: file.name };
+  }
+
+  // ── HANDLE NEXT (Page 1 → Page 2) ─────────────────────────────────
+  async function handleNext() {
+    hideAlert();
+    if (!validatePage1()) return;
+
+    const btn = document.getElementById('nextBtn');
+    const spinner = document.getElementById('nextSpinner');
+    btn.disabled = true;
+    spinner.style.display = 'block';
+
+    try {
+      const email = val('email');
+
+      // Check duplicate
+      const exists = await checkEmailExists(email);
+      if (exists) {
+        showAlert('This email has already been used to submit an application. Each email can only apply once.', 'error');
+        btn.disabled = false;
+        spinner.style.display = 'none';
+        return;
+      }
+
+      // Upload CV
+      const { url: cvUrl, filename: cvFilename } = await uploadCV(cvFileInput.files[0], email);
+
+      // Save Page 1 to DB
+      const payload = {
+        full_name: val('fullName'),
+        email: email,
+        mobile: val('mobile'),
+        country: val('country'),
+        state: val('state'),
+        cv_url: cvUrl,
+        cv_filename: cvFilename,
+        page1_completed: true,
+        status: 'submitted'
+      };
+
+      const res = await fetch(`${API}/candidates`, {
+        method: 'POST',
+        headers: HEADERS,
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Failed to save');
+
+      candidateId = data[0].id;
+
+      // Move to page 2
+      document.getElementById('page1').classList.remove('active');
+      document.getElementById('page2').classList.add('active');
+      document.getElementById('circle1').className = 'step-circle done';
+      document.getElementById('circle1').textContent = '✓';
+      document.getElementById('step1').className = 'step done';
+      document.getElementById('line1').className = 'step-line done';
+      document.getElementById('circle2').className = 'step-circle active';
+      document.getElementById('step2').className = 'step active';
+
+    } catch (err) {
+      showAlert(err.message || 'Something went wrong. Please try again.', 'error');
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = 'none';
+    }
+  }
+
+  // ── GO BACK ────────────────────────────────────────────────────────
+  function goBack() {
+    document.getElementById('page2').classList.remove('active');
+    document.getElementById('page1').classList.add('active');
+    document.getElementById('circle1').className = 'step-circle active';
+    document.getElementById('circle1').textContent = '1';
+    document.getElementById('step1').className = 'step active';
+    document.getElementById('line1').className = 'step-line';
+    document.getElementById('circle2').className = 'step-circle';
+    document.getElementById('step2').className = 'step';
+  }
+
+  // ── HANDLE SUBMIT (Page 2) ─────────────────────────────────────────
+  async function handleSubmit() {
+    hideAlert();
+    if (!validatePage2()) return;
+    if (!candidateId) {
+      showAlert('Session expired. Please refresh and start again.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('submitBtn');
+    const spinner = document.getElementById('submitSpinner');
+    btn.disabled = true;
+    spinner.style.display = 'block';
+
+    try {
+      const payload = {
+        years_experience: val('yearsExp'),
+        job_role: val('currentRole'),
+        expected_salary: val('expectedSalary'),
+        availability: val('availability'),
+        notice_period: val('noticePeriod'),
+        page2_completed: true
+      };
+
+      const res = await fetch(`${API}/candidates?id=eq.${candidateId}`, {
+        method: 'PATCH',
+        headers: HEADERS,
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) throw new Error('Failed to save details');
+
+      // Show success
+      document.getElementById('progressBar').style.display = 'none';
+      document.getElementById('page2').style.display = 'none';
+      document.getElementById('alertBox').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+      document.getElementById('appIdDisplay').textContent = `Application ID: ${candidateId.slice(0,8).toUpperCase()}`;
+
+    } catch (err) {
+      showAlert(err.message || 'Submission failed. Please try again.', 'error');
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = 'none';
+    }
+  }
+</script>
+</body>
+</html>
