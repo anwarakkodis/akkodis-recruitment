@@ -4,15 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Akkodis — Apply Now</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
 
   :root {
-    --akk-blue: #0066CC;
+    --akk-blue: #ffb81c;
     --akk-dark: #001A3A;
-    --akk-mid: #003875;
+    --akk-mid: #003E66;
     --akk-light: #E8F1FB;
-    --akk-accent: #00AEEF;
+    --akk-accent: #082F48;
     --akk-white: #FFFFFF;
     --akk-grey: #6B7A8D;
     --akk-border: #CBD8E8;
@@ -24,38 +29,19 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--akk-dark);
+    font-family: "Roboto", sans-serif;
     min-height: 100vh;
+    align-items: flex-start;
     display: flex;
-    align-items: center;
     justify-content: center;
     padding: 20px;
     position: relative;
     overflow-x: hidden;
   }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 10% 20%, rgba(0,102,204,0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 90% 80%, rgba(0,174,239,0.12) 0%, transparent 60%);
-    pointer-events: none;
-  }
+ 
 
-  /* Grid overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0,102,204,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,102,204,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-  }
+ 
 
   .card {
     background: rgba(255,255,255,0.03);
@@ -68,8 +54,7 @@
     overflow: hidden;
   }
 
-  .card-header {
-    background: linear-gradient(135deg, var(--akk-mid) 0%, var(--akk-blue) 100%);
+  .card-header { 
     padding: 32px 40px 28px;
     position: relative;
     overflow: hidden;
@@ -98,7 +83,7 @@
   }
 
   .logo {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-weight: 700;
     font-size: 22px;
     color: white;
@@ -124,7 +109,7 @@
   }
 
   .card-header h1 {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 28px;
     font-weight: 700;
     color: white;
@@ -168,7 +153,7 @@
     background: transparent;
     transition: all 0.3s ease;
     flex-shrink: 0;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
   }
 
   .step-circle.active {
@@ -219,10 +204,10 @@
   }
 
   .section-label {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 11px;
     font-weight: 700;
-    color: var(--akk-accent);
+    color: #5f849b;
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-bottom: 20px;
@@ -249,7 +234,7 @@
     color: rgba(255,255,255,0.55);
     text-transform: uppercase;
     letter-spacing: 0.8px;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
   }
 
   input, select, textarea {
@@ -372,10 +357,9 @@
 
   .btn {
     flex: 1;
-    padding: 14px 24px;
-    border-radius: 10px;
+    padding: 14px 24px; 
     border: none;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 15px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -389,14 +373,13 @@
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, var(--akk-blue), var(--akk-accent));
-    color: white;
-    box-shadow: 0 4px 20px rgba(0,102,204,0.35);
+    background: var(--akk-blue);
+    color: black; 
   }
 
   .btn-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 28px rgba(0,102,204,0.5);
+    box-shadow: 0 6px 28px rgba(29, 48, 66, 0.5);
   }
 
   .btn-primary:active { transform: translateY(0); }
@@ -450,7 +433,7 @@
   }
 
   .success-screen h2 {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 28px;
     font-weight: 700;
     color: white;
@@ -470,7 +453,7 @@
     border: 1px solid rgba(0,102,204,0.3);
     border-radius: 8px;
     padding: 10px 20px;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 14px;
     font-weight: 700;
     color: var(--akk-accent);
@@ -496,7 +479,7 @@
     flex: 1;
     padding: 14px 10px;
     text-align: center;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 13px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -515,7 +498,7 @@
   .mode-tab.active {
     color: var(--akk-accent);
     border-bottom-color: var(--akk-accent);
-    background: rgba(0,174,239,0.05);
+    background:#0ff;
   }
 
   /* ── TRACK SCREEN ────────────────────────────────────────────────── */
@@ -542,7 +525,7 @@
   }
 
   .track-result-name {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 20px;
     font-weight: 700;
     color: white;
@@ -552,14 +535,14 @@
     font-size: 11px;
     color: rgba(255,255,255,0.5);
     margin-top: 2px;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     letter-spacing: 1px;
   }
 
   .track-status-badge {
     padding: 6px 14px;
     border-radius: 20px;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Roboto", sans-serif;
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -654,10 +637,7 @@
 
 <div class="card">
   <div class="card-header">
-    <div class="logo">
-      <span class="logo-dot"></span>
-      AKKODIS
-    </div>
+    
     <h1 id="headerTitle">Join Our Team</h1>
     <p id="headerSub">Complete your application in 2 quick steps</p>
   </div>
