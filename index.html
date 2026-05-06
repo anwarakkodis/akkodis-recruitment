@@ -456,7 +456,7 @@
     font-family: "Roboto", sans-serif;
     font-size: 14px;
     font-weight: 700;
-    color: var(--akk-accent);
+    color: var(--akk-blue);
     letter-spacing: 1px;
   }
 
@@ -1003,7 +1003,7 @@
     try {
       const email = val('email');
 
-      // Step 1: Check duplicate email FIRST
+      // Check duplicate
       const exists = await checkEmailExists(email);
       if (exists) {
         showAlert('This email has already been used to submit an application. Each email can only apply once.', 'error');
@@ -1012,19 +1012,10 @@
         return;
       }
 
-      // Step 2: Try CV upload — if it fails, save without CV (don't block the form)
-      let cvUrl = null;
-      let cvFilename = null;
-      try {
-        const cvResult = await uploadCV(cvFileInput.files[0], email);
-        cvUrl = cvResult.url;
-        cvFilename = cvResult.filename;
-      } catch (cvErr) {
-        console.warn('CV upload failed, continuing without CV:', cvErr.message);
-        // Don't block — save the record without CV, can be uploaded later
-      }
+      // Upload CV
+      const { url: cvUrl, filename: cvFilename } = await uploadCV(cvFileInput.files[0], email);
 
-      // Step 3: Save Page 1 to DB
+      // Save Page 1 to DB
       const payload = {
         full_name: val('fullName'),
         email: email,
@@ -1044,24 +1035,11 @@
       });
 
       const data = await res.json();
-      if (!res.ok) {
-        // Handle unique email constraint from DB side too
-        if (data.code === '23505' || (data.message && data.message.includes('unique'))) {
-          showAlert('This email has already been used to submit an application. Each email can only apply once.', 'error');
-        } else {
-          throw new Error(data.message || 'Failed to save. Please try again.');
-        }
-        return;
-      }
+      if (!res.ok) throw new Error(data.message || 'Failed to save');
 
       candidateId = data[0].id;
 
-      // Show warning if CV didn't upload
-      if (!cvUrl) {
-        showAlert('Your details were saved but CV upload failed. You can resubmit with a smaller file (max 5MB).', 'info');
-      }
-
-      // Step 4: Move to page 2
+      // Move to page 2
       document.getElementById('page1').classList.remove('active');
       document.getElementById('page2').classList.add('active');
       document.getElementById('circle1').className = 'step-circle done';
